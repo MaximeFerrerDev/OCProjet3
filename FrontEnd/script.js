@@ -1,7 +1,6 @@
 /* Works retrieval from API */
 const worksServerResponse = await fetch('http://localhost:5678/api/works')
 const works = await worksServerResponse.json()
-console.log(works)
 
 /** 
  * Generate the HTML presenting the works
