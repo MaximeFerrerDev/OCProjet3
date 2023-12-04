@@ -201,10 +201,13 @@ nav ul {
 	gap: 44px;
 }
 
+a {
+	text-decoration: none;
+	color: inherit
+}
+
 main {
-	width: 100%;
-	max-width: 945px;
-	margin: 50px;
+	padding : 0px 95px;
 }
 
 #introduction img {
@@ -216,6 +219,20 @@ main {
 #introduction {
 	gap: 72px;
 	margin-bottom: 140px;
+}
+
+footer {
+	width: 100vw;
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	background: #ffffff;
+}
+
+footer nav {
+	margin-right: 100px;
 }
 /* Filter buttons */
 
@@ -269,4 +286,41 @@ main {
 	font-weight: 700;
 	line-height: normal;
 	cursor: pointer;
+}
+
+/* Login page */
+
+#login {
+	width: 50%;
+	margin: auto;
+	text-align: center;
+	margin-top: 150px;
+	margin-bottom: 150px;
+}
+
+
+#login form {
+	text-align: left;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#login input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#login label {
+	margin: 2em 0 1em 0;
+}
+#login textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.forgot-password {
+	text-decoration-line: underline;
 }
