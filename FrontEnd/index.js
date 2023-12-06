@@ -3,10 +3,14 @@ const works = await retrieveWorks()
 const categories = await retrieveCategories()
 generateWorks(works)
 addingFilterButtonsReactions()
+const loginCheck = checkLogin()
+if (loginCheck) {
+    startEditMode()
+}
 
 /** 
  * RETRIEVE WORKS FROM API
- * @return { Array } works Array of objects containing each work
+ * @return { Array } Array of objects containing each work
 **/ 
 async function retrieveWorks() {
     const worksServerResponse = await fetch('http://localhost:5678/api/works')
@@ -16,7 +20,7 @@ async function retrieveWorks() {
 
 /** 
  * RETRIEVE CATEGORIES FROM API
- * @return { Array } categories Array of objects containing each work
+ * @return { Array } Array of objects containing each work
 **/ 
 async function retrieveCategories() {
     const categoriesServerResponse = await fetch('http://localhost:5678/api/categories')
@@ -133,4 +137,37 @@ function addingFilterButtonsReactions() {
         appartementsButton.classList.remove("focus-button")
         hotelsRestaurantsButton.classList.add("focus-button")
     })
+}
+
+/** 
+ * CHECKING USER LOGIN
+ * @return { Boolean } which is true if there is a bearer token
+**/
+function checkLogin() {
+    const token = (localStorage.getItem("token"))
+    return Boolean(token)
+}
+
+
+/** 
+ * STARTING THE EDIT MODE
+**/
+function startEditMode() {
+    /* Generating the edit mode header */
+    const editHeader = document.createElement("div")
+    editHeader.className = "edit-header"
+    editHeader.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> <p> Mode édition </p>'
+    const header = document.querySelector("header")
+    const mainHeader = document.querySelector(".main-header")
+    header.insertBefore(editHeader,mainHeader)
+    /* Generating modal window (to do after ...) */
+    
+    /* Adding modal window button */
+    const modalButton = document.createElement("div")
+    modalButton.className = "modal-button"
+    modalButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> <p> modifier </p>'
+    const sectionPortfolio = document.querySelector("#portfolio")
+    const filtersButtonContainer = document.querySelector(".filters-buttons-container")
+    sectionPortfolio.insertBefore(modalButton,filtersButtonContainer)
+
 }
