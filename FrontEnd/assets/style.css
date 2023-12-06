@@ -218,7 +218,7 @@ main {
 
 #introduction {
 	gap: 72px;
-	margin-bottom: 140px;
+	margin-bottom: 125px;
 }
 
 footer {
@@ -234,6 +234,7 @@ footer {
 footer nav {
 	margin-right: 100px;
 }
+
 /* Filter buttons */
 
 #portfolio {
@@ -341,6 +342,7 @@ footer nav {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 }
 
 /* Edit mode */ 
@@ -362,8 +364,12 @@ footer nav {
 	align-items: center;
 	justify-content: center;
 	gap: 10px;
-	position: relative;
-	bottom: 72px;
-    left: 180px;
 	cursor: pointer;
+	position: relative;
+	top: 23px;
+    left: 175px;
+}
+
+#portfolio {
+	margin-top: 0px;
 }
