@@ -253,15 +253,14 @@ footer nav {
     gap: 10px;
 }
 
-.all-categories-button {
-	padding: 0px 30px;
+.not-focus-button {
+	padding: 0px 20px;
 	display:flex;
 	align-items: center;
 	height: 37px;
 	border-radius: 60px;
 	border: 1px solid #1D6154;
-	background: #1D6154;
-	color: #FFF;
+	color: #1D6154;
 	text-align: center;
 	font-family: Syne;
 	font-size: 16px;
@@ -271,14 +270,15 @@ footer nav {
 	cursor: pointer;
 }
 
-.individual-catergory-button {
+.focus-button {
 	padding: 0px 20px;
 	display:flex;
 	align-items: center;
 	height: 37px;
 	border-radius: 60px;
 	border: 1px solid #1D6154;
-	color: #1D6154;
+	background: #1D6154;
+	color: #FFF;
 	text-align: center;
 	font-family: Syne;
 	font-size: 16px;

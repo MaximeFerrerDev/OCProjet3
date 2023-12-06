@@ -25,11 +25,23 @@ submitLoginButton.addEventListener("click", async function(event) {
     headers: { "Content-Type": "application/json" },
     body: loginCredentialsJSON
     })
-    const loginResult = await loginServerResponse.json()
-    const IdTokenValue = Object.values(loginResult)
-    window.localStorage.setItem("userId", IdTokenValue[0])
-    window.localStorage.setItem("token", IdTokenValue[1])
-    /* Sending the user back to the homepage */
-    /* window.location.href = "http://127.0.0.1:5500/FrontEnd/index.html" */
+    /* Informing user if login credentials are incorrect */
+    if (loginServerResponse.status !== 200) {
+        if (loginServerResponse.status == 401) {
+            alert("Mot de passe incorrect")
+        }
+        if (loginServerResponse.status == 404) {
+            alert("Adresse email non valide")
+        }
+    }
+    /* If login is successful, storing bearer token and redirecting */
+    else {
+        console.log("Connexion réussie")
+        const loginResult = await loginServerResponse.json()
+        const IdTokenValue = Object.values(loginResult)
+        window.localStorage.setItem("userId", IdTokenValue[0])
+        window.localStorage.setItem("token", IdTokenValue[1])
+        window.location.href = "http://127.0.0.1:5500/FrontEnd/index.html"
+    }
 })
 
