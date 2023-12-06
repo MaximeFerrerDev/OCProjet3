@@ -160,14 +160,29 @@ function startEditMode() {
     const header = document.querySelector("header")
     const mainHeader = document.querySelector(".main-header")
     header.insertBefore(editHeader,mainHeader)
-    /* Generating modal window (to do after ...) */
+
+    /* Switching the login button to logout */
+    const loginLogoutButton = document.querySelector(".login-logout-button")
+    loginLogoutButton.innerHTML = '<a href="login.html">logout</a>'
+
+    /* Removing token and userId when logging out */
+    loginLogoutButton.addEventListener("click", function(){
+        window.localStorage.removeItem("userId")
+        window.localStorage.removeItem("token")
+    })
+
+    /* TO DO : Generating modal window */
     
     /* Adding modal window button */
     const modalButton = document.createElement("div")
     modalButton.className = "modal-button"
     modalButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> <p> modifier </p>'
+    const main = document.querySelector("main")
     const sectionPortfolio = document.querySelector("#portfolio")
-    const filtersButtonContainer = document.querySelector(".filters-buttons-container")
-    sectionPortfolio.insertBefore(modalButton,filtersButtonContainer)
+    main.insertBefore(modalButton,sectionPortfolio)
 
+    /* Adding listener to modal window button */
+    modalButton.addEventListener("click", function(){
+        alert("modal window")
+    })
 }
