@@ -190,6 +190,10 @@ footer nav ul {
 
 /* Main */
 
+* {
+	box-sizing: border-box;
+}
+
 body {
 	background: #FFFEF8;
 	display: flex;
@@ -373,4 +377,117 @@ footer nav {
 
 #portfolio {
 	margin-top: 0px;
+}
+
+/* Modal */
+
+.modal {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-wrapper {
+	overflow: auto;
+	width: 630px;
+	max-width: calc(100vw - 20px);
+	height: 640px;
+	max-height: calc(100vh - 20px);
+	padding: 35px 30px;
+	background-color: #ffffff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	border-radius: 10px;
+}
+
+.button-close-modal-gallery {
+	align-self: flex-end;
+	cursor: pointer;
+}
+
+.title-modal {
+	margin-top: 10px;
+	margin-bottom: 26px;
+	color: #000;
+	text-align: center;
+	font-family: Work Sans;
+	font-size: 26px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+
+.modal-gallery-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 0 80px;
+	gap: 6px;
+}
+
+.image-sub-container {
+	width: 77px;
+	height: 104px;
+	margin-top: 20px;
+}
+
+.image-sub-container > img {
+	width: 77px;
+	height: 104px;
+}
+
+.line {
+	min-height: 1px;
+	height: 1px;
+	width: calc(100% - 140px);
+	background-color: #B3B3B3;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	justify-self: flex-end
+}
+
+.add-picture-button {
+	min-height: 36px;
+	height: 36px;
+	width: 237px;
+	font-size: 14px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	font-family: 'Syne';
+    font-weight: 700;
+    color: white;
+    background-color: #1D6154;
+    text-align: center;
+    border-radius: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.remove-image-button {
+	background-color: #000000;
+	height: 17px;
+	width: 17px;
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 2px;
+	cursor: pointer;
+	position: relative;
+	bottom: 100px;
+	left: 55px;
+}
+
+.fa-trash-can {
+	padding-top: 1px;
+	color: #ffffff;
 }

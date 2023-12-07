@@ -1,12 +1,3 @@
-/* Code starting when the page loads */
-const works = await retrieveWorks()
-const categories = await retrieveCategories()
-generateWorks(works)
-addingFilterButtonsReactions()
-const loginCheck = checkLogin()
-if (loginCheck) {
-    startEditMode()
-}
 
 /** 
  * RETRIEVE WORKS FROM API
@@ -148,6 +139,38 @@ function checkLogin() {
     return Boolean(token)
 }
 
+/**
+ * STARTING THE MODAL
+ **/
+const startModal = function () {
+    /* Opening the modal window */
+    const modalGallery = document.querySelector("#modal-gallery")
+    modalGallery.style.display = null
+
+    /* Adding listener to close the modal */
+    const modal = document.querySelector(".modal")
+    const modalCloseButton = document.querySelector(".button-close-modal-gallery")
+    const modalGalleryContainer = document.querySelector(".modal-gallery-container")
+    modalCloseButton.addEventListener("click", function() {
+       modal.style.display ="none"
+       modalGalleryContainer.innerHTML = ''
+    })
+
+    /* Generating miniature pictures */
+    for (let i = 0; i < works.length; i++) {
+        const workModalImage = document.createElement("img")
+        const imageSubContainer = document.createElement("div")
+        const removeImageButton = document.createElement("div")
+        removeImageButton.className= "remove-image-button"
+        removeImageButton.innerHTML= `<i class="fa-solid fa-trash-can fa-xs"></i>` 
+        imageSubContainer.className = "image-sub-container"
+        workModalImage.src = works[i].imageUrl
+        imageSubContainer.appendChild(workModalImage)
+        imageSubContainer.appendChild(removeImageButton)
+        modalGalleryContainer.appendChild(imageSubContainer)
+    }
+
+}
 
 /** 
  * STARTING THE EDIT MODE
@@ -171,8 +194,6 @@ function startEditMode() {
         window.localStorage.removeItem("token")
     })
 
-    /* TO DO : Generating modal window */
-    
     /* Adding modal window button */
     const modalButton = document.createElement("div")
     modalButton.className = "modal-button"
@@ -181,8 +202,17 @@ function startEditMode() {
     const sectionPortfolio = document.querySelector("#portfolio")
     main.insertBefore(modalButton,sectionPortfolio)
 
-    /* Adding listener to modal window button */
-    modalButton.addEventListener("click", function(){
-        alert("modal window")
-    })
+    /* Adding listener to start modal window */
+    modalButton.addEventListener("click", startModal)
+}
+
+
+/* CODE STARTING WHEN THE PAGE LOADS */
+const works = await retrieveWorks()
+const categories = await retrieveCategories()
+generateWorks(works)
+addingFilterButtonsReactions()
+const loginCheck = checkLogin()
+if (loginCheck) {
+    startEditMode()
 }
