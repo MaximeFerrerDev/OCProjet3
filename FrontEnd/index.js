@@ -144,12 +144,30 @@ function checkLogin() {
  **/
 const startAddPictureModal = function () {
     /* Removing the gallery modal */
+    const modalGalleryContainer = document.querySelector(".modal-gallery-container")
+    modalGalleryContainer.innerHTML = ''
     const modalGallery = document.querySelector("#modal-gallery")
     modalGallery.style.display = "none"
+   
 
     /* Adding the add picture modal */
     const addPictureModal = document.querySelector("#modal-add-picture")
     addPictureModal.style.display = null
+
+    /* Adding listener to close the modal */
+    const modalPictureCloseButton = document.querySelector(".button-close-modal-picture")
+    modalPictureCloseButton.addEventListener("click",function() {
+        addPictureModal.style.display ="none"
+    })
+
+    /* Adding listener to go back to the gallery modal */
+    const backToGalleryModalButton = document.querySelector(".button-back-gallery-modal")
+    backToGalleryModalButton.addEventListener("click", function() {
+        addPictureModal.style.display ="none"
+        const modalGalleryContainer = document.querySelector(".modal-gallery-container")
+        modalGalleryContainer.innerHTML = ''
+        startGalleryModal()
+    })
 }
 
 /**
@@ -173,7 +191,7 @@ const startGalleryModal = function () {
     const AddingPictureButton = document.querySelector(".add-picture-button")
     AddingPictureButton.addEventListener("click", startAddPictureModal)
 
-    /* Generating miniature pictures and remove image buttons */
+    /* Generating miniature pictures and the remove image buttons */
     for (let i = 0; i < works.length; i++) {
         const workModalImage = document.createElement("img")
         const imageSubContainer = document.createElement("div")
