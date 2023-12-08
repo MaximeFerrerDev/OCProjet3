@@ -25,6 +25,7 @@ submitLoginButton.addEventListener("click", async function(event) {
     headers: { "Content-Type": "application/json" },
     body: loginCredentialsJSON
     })
+    
     /* Informing user if login credentials are incorrect */
     if (loginServerResponse.status !== 200) {
         if (loginServerResponse.status == 401) {
@@ -34,6 +35,7 @@ submitLoginButton.addEventListener("click", async function(event) {
             alert("Adresse email non valide")
         }
     }
+
     /* If login is successful, storing bearer token and redirecting */
     else {
         console.log("Connexion réussie")

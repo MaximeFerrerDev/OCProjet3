@@ -140,9 +140,22 @@ function checkLogin() {
 }
 
 /**
- * STARTING THE MODAL
+ * STARTING THE ADD PICTURE MODAL
  **/
-const startModal = function () {
+const startAddPictureModal = function () {
+    /* Removing the gallery modal */
+    const modalGallery = document.querySelector("#modal-gallery")
+    modalGallery.style.display = "none"
+
+    /* Adding the add picture modal */
+    const addPictureModal = document.querySelector("#modal-add-picture")
+    addPictureModal.style.display = null
+}
+
+/**
+ * STARTING THE GALLERY MODAL
+ **/
+const startGalleryModal = function () {
     /* Opening the modal window */
     const modalGallery = document.querySelector("#modal-gallery")
     modalGallery.style.display = null
@@ -156,12 +169,17 @@ const startModal = function () {
        modalGalleryContainer.innerHTML = ''
     })
 
-    /* Generating miniature pictures */
+    /* Adding listener to open the second modal*/
+    const AddingPictureButton = document.querySelector(".add-picture-button")
+    AddingPictureButton.addEventListener("click", startAddPictureModal)
+
+    /* Generating miniature pictures and remove image buttons */
     for (let i = 0; i < works.length; i++) {
         const workModalImage = document.createElement("img")
         const imageSubContainer = document.createElement("div")
         const removeImageButton = document.createElement("div")
         removeImageButton.className= "remove-image-button"
+        /* need to add an identifier here for later */
         removeImageButton.innerHTML= `<i class="fa-solid fa-trash-can fa-xs"></i>` 
         imageSubContainer.className = "image-sub-container"
         workModalImage.src = works[i].imageUrl
@@ -203,7 +221,7 @@ function startEditMode() {
     main.insertBefore(modalButton,sectionPortfolio)
 
     /* Adding listener to start modal window */
-    modalButton.addEventListener("click", startModal)
+    modalButton.addEventListener("click", startGalleryModal)
 }
 
 

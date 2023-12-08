@@ -77,6 +77,28 @@
 			<button class="add-picture-button"><p>Ajouter une photo</p></button>
 		</div>
 	</aside>
+	<aside id="modal-add-picture" class="modal" style="display:none;">
+		<div class="modal-wrapper">
+			<i class="fa-solid fa-xmark fa-2xl button-close-modal-picture"></i>
+			<h2 class="title-modal">Ajout photo</h2>
+			<form>
+				<div class="picture-submitting-container">
+					<img src="./assets/icons/picture.svg" alt="picture">
+					<label class="download-picture-button-label">
+						<input type="file" name="file" required class="download-picture-button" hidden></input>
+						<p>+ Ajouter photo</p>
+					</label>
+					<p class="max-download-info">jpg, png : 4mo max</p>
+				</div>
+				<label for="title" class="modal-form-label">Titre</label>
+				<input type="text" name="title" id="title">
+				<label for="category" class="modal-form-label">Catégorie</label>
+				<input type="category" name="category" id="category">
+				<div class="line2"></div>
+				<button class="submit-picture-button"><p>Valider</p></button>
+			</form>
+		</div>
+	</aside>
 	<footer>
 		<nav>
 			<ul>
