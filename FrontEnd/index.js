@@ -198,8 +198,6 @@ const startAddPictureModal = function () {
             const previewPicture = document.createElement("img")
             previewPicture.className = "preview-picture"
             previewPicture.src = URL.createObjectURL(event.target.files[0])
-            console.log(previewPicture.src)
-            console.log(previewPicture)
             pictureSubmittingContainer.appendChild(previewPicture)
         }
     })
@@ -210,22 +208,19 @@ const startAddPictureModal = function () {
     const submitPictureButton = document.querySelector(".submit-picture-button")
     submitPictureButton.addEventListener("click", function(event) {
         event.preventDefault()
-        console.log(addedPictureCategoryInput.value)
-        console.log(addedPictureTitleInput.value)
-        console.log(downloadPictureButton.value)
-        const category = addedPictureCategoryInput.value
-        const title = addedPictureTitleInput.value
-        const picture = downloadPictureButton.value
+        const category = 1
+        const picture = downloadPictureButton.files[0]
         /* Creating a formdata object */
         const formData = new FormData()
-        const newId = works.length + 1
-        formData.append("id", newId)
+        formData.append("image", picture)
         formData.append("title", addedPictureTitleInput.value)
-        formData.append("imageUrl", downloadPictureButton.value)
-        formData.append("categoryId", addedPictureCategoryInput.value)
-        const userId = localStorage.getItem("userId")
-        formData.append("userId", userId)
+        formData.append("category", category)
         /* Sending the formdata */
+        const request = new XMLHttpRequest()
+        const token = localStorage.getItem("token")
+        request.open("POST", "http://localhost:5678/api/works", true)
+        request.setRequestHeader("Authorization", "Bearer "+ token)
+        request.send(formData)
     })
 
 }
