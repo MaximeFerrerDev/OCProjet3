@@ -640,3 +640,8 @@ form:invalid > .submit-picture-button {
 	background: #A7A7A7;
 	pointer-events: none;
   }
+
+  .preview-picture {
+	max-height: 169px;
+	max-width: 420px;
+  }

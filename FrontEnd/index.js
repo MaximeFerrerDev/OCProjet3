@@ -158,6 +158,16 @@ const startAddPictureModal = function () {
     const modalPictureCloseButton = document.querySelector(".button-close-modal-picture")
     modalPictureCloseButton.addEventListener("click",function() {
         addPictureModal.style.display ="none"
+        /* Resetting the picture input */
+        const pictureSubmittingContainer = document.querySelector(".picture-submitting-container")
+        pictureSubmittingContainer.innerHTML= `
+            <img src="./assets/icons/picture.svg" alt="picture">
+            <label class="download-picture-button-label">
+                <input type="file" name="file" required class="download-picture-button" hidden></input>
+                <p>+ Ajouter photo</p>
+            </label>
+            <p class="max-download-info">jpg, png : 4mo max</p>
+            `
     })
 
     /* Adding listener to go back to the gallery modal */
@@ -166,7 +176,32 @@ const startAddPictureModal = function () {
         addPictureModal.style.display ="none"
         const modalGalleryContainer = document.querySelector(".modal-gallery-container")
         modalGalleryContainer.innerHTML = ''
+        /* Resetting the picture input */
+        const pictureSubmittingContainer = document.querySelector(".picture-submitting-container")
+        pictureSubmittingContainer.innerHTML= `
+            <img src="./assets/icons/picture.svg" alt="picture">
+            <label class="download-picture-button-label">
+                <input type="file" name="file" required class="download-picture-button" hidden></input>
+                <p>+ Ajouter photo</p>
+            </label>
+            <p class="max-download-info">jpg, png : 4mo max</p>
+            `
         startGalleryModal()
+    })
+
+    /* Showing preview after uploading a picture */
+    const downloadPictureButton = document.querySelector(".download-picture-button")
+    downloadPictureButton.addEventListener("change", function(event) {
+        const pictureUpload = downloadPictureButton.files 
+        if (pictureUpload) {
+            console.log(pictureUpload)
+            const pictureSubmittingContainer = document.querySelector(".picture-submitting-container")
+            pictureSubmittingContainer.innerHTML = ``
+            const previewPicture = document.createElement("img")
+            previewPicture.className = "preview-picture"
+            previewPicture.src = URL.createObjectURL(event.target.files[0])
+            pictureSubmittingContainer.appendChild(previewPicture)
+        }
     })
 }
 
