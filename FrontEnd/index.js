@@ -252,13 +252,21 @@ const startGalleryModal = function () {
         const imageSubContainer = document.createElement("div")
         const removeImageButton = document.createElement("div")
         removeImageButton.className= "remove-image-button"
-        /* need to add an identifier here for later */
+        const Id = works[i].id
         removeImageButton.innerHTML= `<i class="fa-solid fa-trash-can fa-xs"></i>` 
         imageSubContainer.className = "image-sub-container"
         workModalImage.src = works[i].imageUrl
         imageSubContainer.appendChild(workModalImage)
         imageSubContainer.appendChild(removeImageButton)
         modalGalleryContainer.appendChild(imageSubContainer)
+        /* Adding listener to delete work */
+        removeImageButton.addEventListener("click", async function(event) {
+            const request = new XMLHttpRequest()
+            const token = localStorage.getItem("token")
+            request.open("DELETE", `http://localhost:5678/api/works/${Id}`, true)
+            request.setRequestHeader("Authorization", "Bearer "+ token)
+            request.send(Id)
+        })
     }
 
 }
