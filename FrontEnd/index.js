@@ -149,7 +149,6 @@ const startAddPictureModal = function () {
     const modalGallery = document.querySelector("#modal-gallery")
     modalGallery.style.display = "none"
    
-
     /* Adding the add picture modal */
     const addPictureModal = document.querySelector("#modal-add-picture")
     addPictureModal.style.display = null
@@ -194,15 +193,41 @@ const startAddPictureModal = function () {
     downloadPictureButton.addEventListener("change", function(event) {
         const pictureUpload = downloadPictureButton.files 
         if (pictureUpload) {
-            console.log(pictureUpload)
             const pictureSubmittingContainer = document.querySelector(".picture-submitting-container")
             pictureSubmittingContainer.innerHTML = ``
             const previewPicture = document.createElement("img")
             previewPicture.className = "preview-picture"
             previewPicture.src = URL.createObjectURL(event.target.files[0])
+            console.log(previewPicture.src)
+            console.log(previewPicture)
             pictureSubmittingContainer.appendChild(previewPicture)
         }
     })
+
+    /* Retrieving data from the form */
+    const addedPictureTitleInput = document.querySelector("#title")
+    const addedPictureCategoryInput = document.querySelector("#category")
+    const submitPictureButton = document.querySelector(".submit-picture-button")
+    submitPictureButton.addEventListener("click", function(event) {
+        event.preventDefault()
+        console.log(addedPictureCategoryInput.value)
+        console.log(addedPictureTitleInput.value)
+        console.log(downloadPictureButton.value)
+        const category = addedPictureCategoryInput.value
+        const title = addedPictureTitleInput.value
+        const picture = downloadPictureButton.value
+        /* Creating a formdata object */
+        const formData = new FormData()
+        const newId = works.length + 1
+        formData.append("id", newId)
+        formData.append("title", addedPictureTitleInput.value)
+        formData.append("imageUrl", downloadPictureButton.value)
+        formData.append("categoryId", addedPictureCategoryInput.value)
+        const userId = localStorage.getItem("userId")
+        formData.append("userId", userId)
+        /* Sending the formdata */
+    })
+
 }
 
 /**
