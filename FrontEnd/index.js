@@ -11,7 +11,7 @@ async function retrieveWorks() {
 
 /** 
  * RETRIEVE CATEGORIES FROM API
- * @return { Array } Array of objects containing each work
+ * @return { Array } Array of objects containing each id and name of categories
 **/ 
 async function retrieveCategories() {
     const categoriesServerResponse = await fetch('http://localhost:5678/api/categories')
@@ -44,89 +44,50 @@ function generateWorks(works) {
 }
 
 /** 
- * ADDING CATEGORIES FILTERS BUTTONS REACTIONS
- * categoryId : 1 => "Objets"
- * categoryId : 2 => "Appartements"
- * categoryId : 3 => "Hôtels&restaurants"
+ * ADDING CATEGORIES FILTERS BUTTONS AND THEIR REACTION
+ * @param { Array } categories Array of objects containing each id and name of categories
 **/
-function addingFilterButtonsReactions() {
-    /* Retrieving all DOM elements */
-    const allCategoriesButton = document.querySelector(".all-categories-button") 
-    const objetsButton = document.querySelector(".objets-button") 
-    const appartementsButton = document.querySelector(".appartements-button") 
-    const hotelsRestaurantsButton = document.querySelector(".hotels-restaurants-button") 
+function addingFilterButtons(categories) {
+    /* Generating buttons */
+    for (let i = 0; i < categories.length; i++) {
+        const filtersButtonContainer = document.querySelector(".filters-buttons-container")
+        const newFilterButton = document.createElement("button")
+        newFilterButton.classList.add("not-focus-button", "filter-button-"+ categories[i].id)
+        newFilterButton.innerText = categories[i].name
+        filtersButtonContainer.appendChild(newFilterButton)
+    }
+
+    /* Adding listener to each individual button */
+    for (let i = 0; i < categories.length; i++) {
+        const filterButton = document.querySelector(`.filter-button-${categories[i].id}`)
+        filterButton.addEventListener("click", function() {
+            /* Deleting every work for which categoryId isn't corresponding */
+            const worksFiltered = Array.from(works)
+            for (let j = worksFiltered.length -1 ; j >= 0 ; j--){
+                if (worksFiltered[j].categoryId != categories[i].id) {
+                    worksFiltered.splice(j,1)
+                }
+            }
+            /* Deleting gallery and regenerating works from the new filtered array */
+            document.querySelector(".gallery").innerHTML = ""
+            generateWorks(worksFiltered)
+            /* Changing CSS classes to show focus */
+            const allFiltersButtons = document.querySelectorAll(".not-focus-button")
+            allFiltersButtons.forEach((button) => button.classList.remove("focus-button") )
+            filterButton.classList.add("focus-button")
+        })
+    }
 
     /* All categories button */
+    const allCategoriesButton = document.querySelector(".all-categories-button")
     allCategoriesButton.addEventListener("click", function(){
-            /* Deleting gallery temporarily*/
-            document.querySelector(".gallery").innerHTML = ""
-            /* Generating the works again */
-            generateWorks(works)
-            /* Changing CSS classes to show focus */
-            allCategoriesButton.classList.add("focus-button")
-            objetsButton.classList.remove("focus-button")
-            appartementsButton.classList.remove("focus-button")
-            hotelsRestaurantsButton.classList.remove("focus-button")
-    })
-
-    /* "Objets" button */
-    objetsButton.addEventListener("click", function(){
-        const worksFiltered = Array.from(works)
-        /* Deleting every work for which categoryId isn't corresponding to "Objets" from the array */
-        for (let i = worksFiltered.length -1 ; i >= 0 ; i--){
-            if (worksFiltered[i].categoryId != 1) {
-                worksFiltered.splice(i,1)
-            }
-        }
-        /* Deleting gallery temporarily */
+        /* Deleting gallery temporarily and regenerating works */
         document.querySelector(".gallery").innerHTML = ""
-        /* Generating the works from the new filtered array */
-        generateWorks(worksFiltered)
+        generateWorks(works)
         /* Changing CSS classes to show focus */
-        allCategoriesButton.classList.remove("focus-button")
-        objetsButton.classList.add("focus-button")
-        appartementsButton.classList.remove("focus-button")
-        hotelsRestaurantsButton.classList.remove("focus-button")
-    })
-
-    /* "Appartements" button */  
-    appartementsButton.addEventListener("click", function(){
-        const worksFiltered = Array.from(works)
-        /* Deleting every work for which categoryId isn't corresponding to "Appartements" from the array */
-        for (let i = worksFiltered.length -1 ; i >= 0 ; i--){
-            if (worksFiltered[i].categoryId != 2) {
-                worksFiltered.splice(i,1)
-            }
-        }
-        /* Deleting gallery temporarily */
-        document.querySelector(".gallery").innerHTML = ""
-        /* Generating the works from the new filtered array */
-        generateWorks(worksFiltered)
-        /* Changing CSS classes to show focus */
-        allCategoriesButton.classList.remove("focus-button")
-        objetsButton.classList.remove("focus-button")
-        appartementsButton.classList.add("focus-button")
-        hotelsRestaurantsButton.classList.remove("focus-button")
-    })
-
-    /* "Hôtels&restaurants" button */
-    hotelsRestaurantsButton.addEventListener("click", function(){
-        const worksFiltered = Array.from(works)
-        /* Deleting every work for which categoryId isn't corresponding to "Hôtels&restaurants" from the array */
-        for (let i = worksFiltered.length -1 ; i >= 0 ; i--){
-            if (worksFiltered[i].categoryId != 3) {
-                worksFiltered.splice(i,1)
-            }
-        }
-        /* Deleting gallery temporarily */
-        document.querySelector(".gallery").innerHTML = ""
-        /* Generating the works from the new filtered array */
-        generateWorks(worksFiltered)
-        /* Changing CSS classes to show focus */
-        allCategoriesButton.classList.remove("focus-button")
-        objetsButton.classList.remove("focus-button")
-        appartementsButton.classList.remove("focus-button")
-        hotelsRestaurantsButton.classList.add("focus-button")
+        const allFiltersButtons = document.querySelectorAll(".not-focus-button")
+        allFiltersButtons.forEach((button) => button.classList.remove("focus-button") )
+        allCategoriesButton.classList.add("focus-button")
     })
 }
 
@@ -310,7 +271,7 @@ function startEditMode() {
 const works = await retrieveWorks()
 const categories = await retrieveCategories()
 generateWorks(works)
-addingFilterButtonsReactions()
+addingFilterButtons(categories)
 const loginCheck = checkLogin()
 if (loginCheck) {
     startEditMode()
