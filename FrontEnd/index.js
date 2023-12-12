@@ -5,10 +5,12 @@ generateWorks(works)
 generateFilterButtons(categories)
 addFilterButtonsReactions(categories)
 const loginCheck = checkLogin()
+let picture = ""
 if (loginCheck) {
     addEditModeHeader()
     addLogoutButton()
     addModalStartingButton()
+    addCategoriesOptions(categories)
 }
 
 /** 
@@ -336,6 +338,7 @@ function addBackToGalleryModalListener() {
 
 /**
  * DISPLAYING A PREVIEW AFTER UPLOADING A PICTURE IF IT MATCHES VALIDATION
+ * AND STORING IT IN THE GLOBAL VARIABLE @picture FOR FUTURE USE
  * Validation 1 : size =< 4mo
  * Validation 2 : ends with .jpg, .jpeg or .png
  **/
@@ -366,6 +369,8 @@ function addPreviewListener() {
             previewPicture.className = "preview-picture"
             previewPicture.src = URL.createObjectURL(event.target.files[0])
             pictureSubmittingContainer.appendChild(previewPicture)
+            /* Saving the file uploaded in a global variable for future use */
+            picture = pictureUpload
         }
     })
 }
@@ -384,21 +389,35 @@ function deleteUploadedFile() {
 }
 
 /**
+ * GENERATE THE CATEGORIES OPTIONS IN THE FORM IN THE "ADD PICTURE" MODAL
+ **/
+function addCategoriesOptions() {
+    for (let i = 0; i < categories.length; i++) {
+        const option = document.createElement("option")
+        option.setAttribute("value", `${categories[i].name}`)
+        option.innerText = `${categories[i].name}` 
+        const categoryInput = document.querySelector("#category")
+        categoryInput.appendChild(option)
+    }
+}
+
+
+/**
  * ADDING LISTENER TO SUBMIT NEW WORK THROUGH THE FORM
  **/
-function addSubmitNewWorkListener() {
-    /* Retrieving data from the form */
-    const addedPictureTitleInput = document.querySelector("#title")
-    const addedPictureCategoryInput = document.querySelector("#category")
+async function addSubmitNewWorkListener() {
     const submitPictureButton = document.querySelector(".submit-picture-button")
-    submitPictureButton.addEventListener("click", function(event) {
+    submitPictureButton.addEventListener("click", async function(event) {
         event.preventDefault()
-        const category = 1 /* Value set for testing, to be modified */
-        const picture = downloadPictureButton.files[0]
+        /* Retrieving title input */
+        const addedPictureTitleInput = document.querySelector("#title")
+        const title = addedPictureTitleInput.value
+        /* Retrieving category input */
+        const category = checkCategoryInput()
         /* Creating a formdata object */
         const formData = new FormData()
         formData.append("image", picture)
-        formData.append("title", addedPictureTitleInput.value)
+        formData.append("title", title)
         formData.append("category", category)
         /* Sending the formdata */
         const request = new XMLHttpRequest()
@@ -406,14 +425,35 @@ function addSubmitNewWorkListener() {
         request.open("POST", "http://localhost:5678/api/works", true)
         request.setRequestHeader("Authorization", "Bearer "+ token)
         request.send(formData)
+        /* Adding listeners to inform submission status */
+        request.addEventListener("error", function() {
+            alert("L'ajout de photo n'a pas fonctionné.")
+        })
+        request.addEventListener("load", function() {
+            alert("L'ajout de photo a fonctionné.")
+            closeAddPictureModal()
+        })
     })
 }
 
 /**
- * RESETTING THE PICTURE SUBMITTING CONTAINER TO DEFAULT
- * (deleting the preview and regenerating button)
+ * CHECKS WHAT CATEGORY IS SELECTED AND RETURN ITS ID
+ * @return {Number} of the category selected
+ **/
+function checkCategoryInput() {
+    for (let i = 0; i < categories.length; i++) {
+        const addedPictureCategoryInput = document.querySelector("#category")
+        if (addedPictureCategoryInput.value == categories[i].name) {
+            return categories[i].id
+        }
+    }
+}
+
+/**
+ * RESETTING THE PICTURE SUBMITTING FORM (INCLUDING PREVIEW AND INPUTS)
  **/
 function resetPictureSubmit() {
+    /* Resetting upload input and deleting preview */
     const pictureSubmittingContainer = document.querySelector(".picture-submitting-container")
     pictureSubmittingContainer.innerHTML= `
         <img src="./assets/icons/picture.svg" alt="picture">
@@ -423,12 +463,20 @@ function resetPictureSubmit() {
         </label>
         <p class="max-download-info">jpg, png : 4mo max</p>
         `
+    /* Resetting category and title inputs */
+    const addedPictureTitleInput = document.querySelector("#title")
+    addedPictureTitleInput.value = ""
+    const addedPictureCategoryInput = document.querySelector("#category")
+    addedPictureCategoryInput.value = categories[0].name
 }
 
 /**
  * CLOSING "ADD PICTURE" MODAL WINDOW
  **/
-function closeAddPictureModal() {
+async function closeAddPictureModal() {
+    resetPictureSubmit()
     const addPictureModal = document.querySelector("#modal-add-picture")
     addPictureModal.style.display ="none"
+    works = await retrieveWorks()
+    generateWorks(works)
 }
