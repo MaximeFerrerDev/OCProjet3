@@ -56,7 +56,6 @@ function generateWorks(works) {
         workElement.appendChild(workImage)
         workElement.appendChild(workCaption)
     }
-    console.log(works)
 }
 
 /** 
@@ -305,12 +304,14 @@ function addCloseAddPictureModalListener() {
     /* When clicking on the cross */
     const modalPictureCloseButton = document.querySelector(".button-close-modal-picture")
     modalPictureCloseButton.addEventListener("click",function() {
+        deleteUploadedFile()
         closeAddPictureModal()
         resetPictureSubmit()
     })
     /* When clicking outside the modal */
     const modal = document.querySelector("#modal-add-picture")
     modal.addEventListener("click", function() {
+        deleteUploadedFile()
         closeAddPictureModal()
         resetPictureSubmit()
     })
@@ -334,13 +335,31 @@ function addBackToGalleryModalListener() {
 }
 
 /**
- * DISPLAYING A PREVIEW AFTER UPLOADING A PICTURE
+ * DISPLAYING A PREVIEW AFTER UPLOADING A PICTURE IF IT MATCHES VALIDATION
+ * Validation 1 : size =< 4mo
+ * Validation 2 : ends with .jpg, .jpeg or .png
  **/
 function addPreviewListener() {
+    const maxUploadSize = 4 * 1024 * 1024
+    const regexpUpload = new RegExp(/^(.*)(\.png|\.jpg|\.jpeg)$/i)
     const downloadPictureButton = document.querySelector(".download-picture-button")
     downloadPictureButton.addEventListener("change", function(event) {
-        const pictureUpload = downloadPictureButton.files 
-        if (pictureUpload) {
+        const pictureUpload = downloadPictureButton.files[0]
+        let fileCheck = true
+        /* Testing for max size */
+        if (pictureUpload.size > maxUploadSize) {
+            fileCheck = false
+            alert("Le fichier est trop volumineux. Taille maximum de 4mo")
+            deleteUploadedFile()
+        }
+        /* Testing for extension */
+        if (regexpUpload.test(pictureUpload.name) == false) {
+            fileCheck = false
+            alert("Le fichier doit être une image au format .jpg ou .png")
+            deleteUploadedFile()
+        }
+        /* Generating preview */
+        if (fileCheck) {
             const pictureSubmittingContainer = document.querySelector(".picture-submitting-container")
             pictureSubmittingContainer.innerHTML = ``
             const previewPicture = document.createElement("img")
@@ -349,6 +368,19 @@ function addPreviewListener() {
             pictureSubmittingContainer.appendChild(previewPicture)
         }
     })
+}
+
+/**
+ * DELETE THE UPLOADED FILE IF ONE IS STILL IN MEMORY
+ **/
+function deleteUploadedFile() {
+    const downloadPictureButton = document.querySelector(".download-picture-button")
+    if (downloadPictureButton) {
+        if (downloadPictureButton.files[0]) {
+            const pictureUpload = downloadPictureButton.files[0]
+            pictureUpload.value=""
+        }
+    }
 }
 
 /**
