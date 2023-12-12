@@ -29,10 +29,10 @@ submitLoginButton.addEventListener("click", async function(event) {
     /* Informing user if login credentials are incorrect */
     if (loginServerResponse.status !== 200) {
         if (loginServerResponse.status == 401) {
-            alert("Mot de passe incorrect")
+            alert("Identifiants incorrects")
         }
         if (loginServerResponse.status == 404) {
-            alert("Adresse email non valide")
+            alert("Identifiants incorrects")
         }
     }
 
