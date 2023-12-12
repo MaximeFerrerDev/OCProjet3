@@ -180,13 +180,24 @@ function openGalleryModalWindow() {
 }
 
 /**
- * ADDING LISTENER TO CLOSE THE "GALLERY" MODAL
+ * ADDING LISTENERS TO CLOSE THE "GALLERY" MODAL
  **/
 function addCloseGalleryModalListeners() {
+    /* When clicking on the cross */
     const modalCloseButton = document.querySelector(".button-close-modal-gallery")
     modalCloseButton.addEventListener("click", function() {
         closeGalleryModal()
         resetMiniatureGallery()
+    })
+    /* When clicking outside the modal */
+    const modal = document.querySelector("#modal-gallery")
+    modal.addEventListener("click", function() {
+        closeGalleryModal()
+        resetMiniatureGallery()
+    })
+    const modalWindow = document.querySelector("#modal-gallery .modal-wrapper")
+    modalWindow.addEventListener("click", function(event) {
+        event.stopPropagation()
     })
 }
 
@@ -265,13 +276,24 @@ function openAddPictureModal() {
 }
 
 /**
- * ADDING LISTENER TO CLOSE THE "ADD PICTURE" MODAL
+ * ADDING LISTENERS TO CLOSE THE "ADD PICTURE" MODAL
  **/
 function addCloseAddPictureModalListener() {
+    /* When clicking on the cross */
     const modalPictureCloseButton = document.querySelector(".button-close-modal-picture")
     modalPictureCloseButton.addEventListener("click",function() {
         closeAddPictureModal()
         resetPictureSubmit()
+    })
+    /* When clicking outside the modal */
+    const modal = document.querySelector("#modal-add-picture")
+    modal.addEventListener("click", function() {
+        closeAddPictureModal()
+        resetPictureSubmit()
+    })
+    const modalWindow = document.querySelector("#modal-add-picture .modal-wrapper")
+    modalWindow.addEventListener("click", function(event) {
+        event.stopPropagation()
     })
 }
 
