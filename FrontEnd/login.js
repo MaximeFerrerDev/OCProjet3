@@ -43,7 +43,7 @@ submitLoginButton.addEventListener("click", async function(event) {
         const IdTokenValue = Object.values(loginResult)
         window.localStorage.setItem("userId", IdTokenValue[0])
         window.localStorage.setItem("token", IdTokenValue[1])
-        window.location.href = "http://127.0.0.1:5500/FrontEnd/index.html"
+        window.location.href = "index.html"
     }
 })
 

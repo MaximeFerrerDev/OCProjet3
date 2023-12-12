@@ -1,5 +1,5 @@
 /* CODE STARTING WHEN THE PAGE LOADS */
-const works = await retrieveWorks()
+let works = await retrieveWorks()
 const categories = await retrieveCategories()
 generateWorks(works)
 generateFilterButtons(categories)
@@ -36,6 +36,9 @@ async function retrieveCategories() {
  * @param { Array } works Array of objects containing each work
 **/ 
 function generateWorks(works) {
+    /* Deleting the gallery if there was something before */
+    document.querySelector(".gallery").innerHTML = ""
+    /* Generating works */
     for (let i = 0; i < works.length; i++) {
         const workToGenerate = works[i]
         /* Retrieval of the DOM element which will contain works*/
@@ -53,6 +56,7 @@ function generateWorks(works) {
         workElement.appendChild(workImage)
         workElement.appendChild(workCaption)
     }
+    console.log(works)
 }
 
 /** 
@@ -87,7 +91,6 @@ function addFilterButtonsReactions(categories) {
                     }
                 }
                 /* Deleting gallery and regenerating works from the new filtered array */
-                document.querySelector(".gallery").innerHTML = ""
                 generateWorks(worksFiltered)
                 /* Changing CSS classes to show focus */
                 const allFiltersButtons = document.querySelectorAll(".not-focus-button")
@@ -100,7 +103,6 @@ function addFilterButtonsReactions(categories) {
         const allCategoriesButton = document.querySelector(".all-categories-button")
         allCategoriesButton.addEventListener("click", function(){
             /* Deleting gallery temporarily and regenerating works */
-            document.querySelector(".gallery").innerHTML = ""
             generateWorks(works)
             /* Changing CSS classes to show focus */
             const allFiltersButtons = document.querySelectorAll(".not-focus-button")
@@ -169,6 +171,7 @@ function galleryModal() {
     addCloseGalleryModalListeners()
     addOpenAddPictureModalListener()
     addMiniatureGallery()
+    addMiniatureGalleryListeners()
 }
 
 /**
@@ -215,11 +218,12 @@ function addOpenAddPictureModalListener() {
 function addMiniatureGallery() {
     /* Generating miniature pictures and the remove image buttons */
     for (let i = 0; i < works.length; i++) {
+        const Id = works[i].id
         const workModalImage = document.createElement("img")
         const imageSubContainer = document.createElement("div")
         const removeImageButton = document.createElement("div")
         removeImageButton.className= "remove-image-button"
-        const Id = works[i].id
+        removeImageButton.classList.add(`remove-${Id}`)
         removeImageButton.innerHTML= `<i class="fa-solid fa-trash-can fa-xs"></i>` 
         imageSubContainer.className = "image-sub-container"
         workModalImage.src = works[i].imageUrl
@@ -227,13 +231,27 @@ function addMiniatureGallery() {
         imageSubContainer.appendChild(removeImageButton)
         const modalGalleryContainer = document.querySelector(".modal-gallery-container")
         modalGalleryContainer.appendChild(imageSubContainer)
-        /* Adding listener on each button to delete work */
+    }
+}
+
+/**
+ * ADDING LISTENERS ON THE DELETE BUTTONS TO DELETE WORKS FROM API
+ **/
+function addMiniatureGalleryListeners() {
+    for (let i = 0; i < works.length; i++) {   
+        const Id = works[i].id
+        const removeImageButton = document.querySelector(`.remove-${Id}`)
         removeImageButton.addEventListener("click", async function(event) {
             const request = new XMLHttpRequest()
             const token = localStorage.getItem("token")
             request.open("DELETE", `http://localhost:5678/api/works/${Id}`, true)
             request.setRequestHeader("Authorization", "Bearer "+ token)
             request.send(Id)
+            resetMiniatureGallery()
+            works = await retrieveWorks()
+            generateWorks(works)
+            addMiniatureGallery()
+            addMiniatureGalleryListeners()
         })
     }
 }
