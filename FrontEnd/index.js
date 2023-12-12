@@ -242,16 +242,21 @@ function addMiniatureGalleryListeners() {
         const Id = works[i].id
         const removeImageButton = document.querySelector(`.remove-${Id}`)
         removeImageButton.addEventListener("click", async function(event) {
-            const request = new XMLHttpRequest()
-            const token = localStorage.getItem("token")
-            request.open("DELETE", `http://localhost:5678/api/works/${Id}`, true)
-            request.setRequestHeader("Authorization", "Bearer "+ token)
-            request.send(Id)
-            resetMiniatureGallery()
-            works = await retrieveWorks()
-            generateWorks(works)
-            addMiniatureGallery()
-            addMiniatureGalleryListeners()
+            const confirmMessage = `Êtes-vous sûr de vouloir supprimer le projet ${Id} ?`
+            if (confirm(confirmMessage) == true) {
+                const request = new XMLHttpRequest()
+                const token = localStorage.getItem("token")
+                request.open("DELETE", `http://localhost:5678/api/works/${Id}`, true)
+                request.setRequestHeader("Authorization", "Bearer "+ token)
+                request.send(Id)
+                resetMiniatureGallery()
+                works = await retrieveWorks()
+                generateWorks(works)
+                addMiniatureGallery()
+                addMiniatureGalleryListeners() 
+            } else {
+                alert(`Vous avez annulé la suppression du projet ${Id}`)
+            }
         })
     }
 }
