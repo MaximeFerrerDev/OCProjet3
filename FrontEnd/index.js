@@ -433,7 +433,8 @@ async function addSubmitNewWorkListener() {
             alert("L'ajout de photo a fonctionné.")
             closeAddPictureModal()
         })
-    })
+
+    }, {once : true})
 }
 
 /**
