@@ -28,7 +28,7 @@ function loginCredentialsRetrieval() {
     const loginCredentials =  {
         email : document.querySelector("[name=email]").value,
         password : document.querySelector("[name=password]").value
-    }
+        }
     const loginCredentialsJSON = JSON.stringify(loginCredentials)
     return loginCredentialsJSON
 }
@@ -55,16 +55,17 @@ async function sendLoginRequest(loginCredentialsJSON) {
  * @param {Object} loginServerResponse the server response
  **/
 
-function loginAction(loginServerResponse) {
+async function loginAction(loginServerResponse) {
     if (loginServerResponse.status !== 200) {
         if (loginServerResponse.status === 401 || loginServerResponse.status === 404) {
             alert("Identifiants incorrects")
         }
     }  else {
-        const loginResult = loginServerResponse.json()
-        const IdTokenValue = Object.values(loginResult)
-        window.localStorage.setItem("userId", IdTokenValue[0])
-        window.localStorage.setItem("token", IdTokenValue[1])
+        const loginResult = await loginServerResponse.json()
+        const idTokenValue = Object.values(loginResult)
+        console.log(idTokenValue)
+        window.localStorage.setItem("userId", idTokenValue[0])
+        window.localStorage.setItem("token", idTokenValue[1])
         window.location.href = "index.html"
     }
 }

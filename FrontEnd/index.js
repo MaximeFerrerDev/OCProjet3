@@ -5,7 +5,7 @@ generateWorks(works)
 generateFilterButtons(categories)
 addFilterButtonsReactions(categories)
 const loginCheck = checkLogin()
-let picture = ""
+let picture = "" /* Variable used later to store the uploaded picture */
 if (loginCheck) {
     addEditModeHeader()
     addLogoutButton()
@@ -68,6 +68,7 @@ function generateFilterButtons(categories) {
     for (let i = 0; i < categories.length; i++) {
         const filtersButtonContainer = document.querySelector(".filters-buttons-container")
         const newFilterButton = document.createElement("button")
+
         newFilterButton.classList.add("not-focus-button", "filter-button-"+ categories[i].id)
         newFilterButton.innerText = categories[i].name
         filtersButtonContainer.appendChild(newFilterButton)
@@ -125,10 +126,11 @@ function checkLogin() {
 **/
 function addEditModeHeader() {
     const editHeader = document.createElement("div")
-    editHeader.className = "edit-header"
-    editHeader.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> <p> Mode édition </p>'
     const header = document.querySelector("header")
     const mainHeader = document.querySelector(".main-header")
+
+    editHeader.className = "edit-header"
+    editHeader.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> <p> Mode édition </p>'
     header.insertBefore(editHeader,mainHeader)
 }
 
@@ -153,10 +155,11 @@ function addLogoutButton() {
 function addModalStartingButton() {
     /* Adding modal window button */
     const modalButton = document.createElement("div")
-    modalButton.className = "modal-button"
-    modalButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> <p> modifier </p>'
     const main = document.querySelector("main")
     const sectionPortfolio = document.querySelector("#portfolio")
+
+    modalButton.className = "modal-button"
+    modalButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> <p> modifier </p>'
     main.insertBefore(modalButton,sectionPortfolio)
 
     /* Adding listener to start modal window */
@@ -208,8 +211,8 @@ function addCloseGalleryModalListeners() {
  * ADDING LISTENER TO OPEN THE "ADD PICTURE" MODAL
  **/
 function addOpenAddPictureModalListener() {
-    const AddingPictureButton = document.querySelector(".add-picture-button")
-    AddingPictureButton.addEventListener("click", addPictureModal)
+    const addingPictureButton = document.querySelector(".add-picture-button")
+    addingPictureButton.addEventListener("click", addPictureModal)
 }
 
 /**
@@ -240,23 +243,23 @@ function addMiniatureGallery() {
  **/
 function addMiniatureGalleryListeners() {
     for (let i = 0; i < works.length; i++) {   
-        const Id = works[i].id
-        const removeImageButton = document.querySelector(`.remove-${Id}`)
+        const id = works[i].id
+        const removeImageButton = document.querySelector(`.remove-${id}`)
         removeImageButton.addEventListener("click", async function(event) {
-            const confirmMessage = `Êtes-vous sûr de vouloir supprimer le projet ${Id} ?`
-            if (confirm(confirmMessage) == true) {
+            const confirmMessage = `Êtes-vous sûr de vouloir supprimer le projet ${id} ?`
+            if (confirm(confirmMessage)) {
                 const request = new XMLHttpRequest()
                 const token = localStorage.getItem("token")
-                request.open("DELETE", `http://localhost:5678/api/works/${Id}`, true)
+                request.open("DELETE", `http://localhost:5678/api/works/${id}`, true)
                 request.setRequestHeader("Authorization", "Bearer "+ token)
-                request.send(Id)
+                request.send(id)
                 resetMiniatureGallery()
                 works = await retrieveWorks()
                 generateWorks(works)
                 addMiniatureGallery()
                 addMiniatureGalleryListeners() 
             } else {
-                alert(`Vous avez annulé la suppression du projet ${Id}`)
+                alert(`Vous avez annulé la suppression du projet ${id}`)
             }
         })
     }
@@ -356,7 +359,7 @@ function addPreviewListener() {
             deleteUploadedFile()
         }
         /* Testing for extension */
-        if (regexpUpload.test(pictureUpload.name) == false) {
+        if (regexpUpload.test(pictureUpload.name) === false) {
             fileCheck = false
             alert("Le fichier doit être une image au format .jpg ou .png")
             deleteUploadedFile()
@@ -386,6 +389,7 @@ function deleteUploadedFile() {
             pictureUpload.value=""
         }
     }
+    picture = ""
 }
 
 /**
@@ -444,7 +448,7 @@ async function addSubmitNewWorkListener() {
 function checkCategoryInput() {
     for (let i = 0; i < categories.length; i++) {
         const addedPictureCategoryInput = document.querySelector("#category")
-        if (addedPictureCategoryInput.value == categories[i].name) {
+        if (addedPictureCategoryInput.value === categories[i].name) {
             return categories[i].id
         }
     }
