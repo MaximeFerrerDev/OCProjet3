@@ -74,7 +74,6 @@ function generateFilterButtons(categories) {
     }
 }
 
-
 /** 
  * ADDING REACTIONS TO CATEGORIES FILTER BUTTONS
  *  * @param { Array } categories Array of objects containing each id and name of categories
@@ -223,6 +222,8 @@ function addMiniatureGallery() {
         const workModalImage = document.createElement("img")
         const imageSubContainer = document.createElement("div")
         const removeImageButton = document.createElement("div")
+        const modalGalleryContainer = document.querySelector(".modal-gallery-container")
+
         removeImageButton.className= "remove-image-button"
         removeImageButton.classList.add(`remove-${Id}`)
         removeImageButton.innerHTML= `<i class="fa-solid fa-trash-can fa-xs"></i>` 
@@ -230,7 +231,6 @@ function addMiniatureGallery() {
         workModalImage.src = works[i].imageUrl
         imageSubContainer.appendChild(workModalImage)
         imageSubContainer.appendChild(removeImageButton)
-        const modalGalleryContainer = document.querySelector(".modal-gallery-container")
         modalGalleryContainer.appendChild(imageSubContainer)
     }
 }
