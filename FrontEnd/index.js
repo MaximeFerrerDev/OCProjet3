@@ -10,7 +10,7 @@ if (loginCheck) {
     addEditModeHeader()
     addLogoutButton()
     addModalStartingButton()
-    addCategoriesOptions(categories)
+    addCategoriesOptions()
 }
 
 /** 
@@ -254,7 +254,7 @@ function addMiniatureGalleryListeners() {
                 request.setRequestHeader("Authorization", "Bearer "+ token)
                 request.send(id)
                 resetMiniatureGallery()
-                works = await retrieveWorks()
+                works = retrieveWorks()
                 generateWorks(works)
                 addMiniatureGallery()
                 addMiniatureGalleryListeners() 
